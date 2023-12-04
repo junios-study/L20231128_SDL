@@ -1,10 +1,11 @@
-
 #include <iostream>
 #include "SDL.h"
 
 
 #pragma comment(lib, "SDL2")
 #pragma comment(lib, "SDL2main")
+
+//OS main() -> SDL_Main
 
 int SDL_main(int argc, char* argv[])
 {
@@ -16,10 +17,15 @@ int SDL_main(int argc, char* argv[])
 	
 	SDL_Renderer* MyRenderer = SDL_CreateRenderer(MyWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
 
+	Uint64 DeltaSeconds = 0;
+	Uint64 LastTime = 0;
 	SDL_Event MyEvent;
 	bool IsRunning = true;
-	while (IsRunning) //message loop
+	while (IsRunning) //message loop, Frame
 	{
+		DeltaSeconds = SDL_GetTicks64() - LastTime;
+		LastTime = SDL_GetTicks64();
+		std::cout << DeltaSeconds << std::endl;
 		SDL_PollEvent(&MyEvent);
 		switch (MyEvent.type)
 		{
@@ -37,7 +43,8 @@ int SDL_main(int argc, char* argv[])
 		SDL_SetRenderDrawColor(MyRenderer, 0xff, 0xff, 0xff, 0x00);
 		SDL_RenderClear(MyRenderer);
 
-		for (int i = 0; i < 100000; ++i)
+		//Actors->Render();
+		for (int i = 0; i < 1; ++i)
 		{
 			int X = rand() % 800;
 			int Y = rand() % 600;
@@ -53,6 +60,7 @@ int SDL_main(int argc, char* argv[])
 		}
 
 		SDL_RenderPresent(MyRenderer);
+
 	}
 
 	SDL_Quit();
